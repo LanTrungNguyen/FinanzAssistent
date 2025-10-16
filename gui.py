@@ -6,6 +6,18 @@ p_e_w_open = False
 width= root.winfo_screenwidth()               
 height= root.winfo_screenheight() 
 
+def save_product_entries() -> None: 
+    entry = {
+        "name" : product_entry.get(), 
+        "quantity" : product_quantity.get(), 
+        "price" : price_entry.get(), 
+        "details" : product_details.get("1.0", "end")
+    }
+    
+    wishlistColumn.products.append(entry)
+    print(wishlistColumn.products)
+     
+
 
 def product_entry_window() -> None: 
     global p_e_w_open
@@ -43,9 +55,11 @@ def product_entry_window() -> None:
     top_line.pack(side="top", anchor="nw")  # keeps everything at the top
 
     # === Widgets aligned horizontally ===
+    global product_entry
     product_entry = tk.Entry(top_line, width=35, font=("Calibri", 13))
-    product_entry.pack(side="left", padx=7, pady=5)
+    product_entry.pack(side="left", padx=9, pady=5)
 
+    global product_quantity
     product_quantity = tk.Spinbox(top_line, width=4, font=("Calibri", 13),
                                   from_=1, to=10, state='readonly')
     product_quantity.pack(side="left", padx=7, pady=5)
@@ -61,18 +75,26 @@ def product_entry_window() -> None:
     vcmd = (window.register(validate_price), "%P")
 
     # validate="key" : bei jedem Tastendruck
+    global price_entry
     price_entry = tk.Entry(top_line, width=10, font=("Calibri", 13), validate="key", validatecommand=vcmd)
     price_entry.pack(side="left", padx=(7, 0), pady=5)
-
+    
     price_label = tk.Label(top_line, width=4, text="€", font=("Calibri", 12), background="grey")
     price_label.pack_propagate(False)
     price_label.pack(side="left")
+
+    send_bt = tk.Button(product_entry_row.frameRow, text="Send -->", width=23, bd=1, font=("Calibri", 11), command=lambda:[save_product_entries(), on_close()])
+    send_bt.pack_propagate(False)
+    send_bt.pack(pady=10, padx=9, side="right")
 
     # === Grey detail area below ===
     product_detail_row = Row(width=window_width, height=window_height*2/3,
                              rowName="product_detail_row", master=window, backgroundcolor="grey")
 
-
+    global product_details
+    product_details = tk.Text(product_detail_row.frameRow, font=("Calibri", 13), width=50)
+    product_details.pack_propagate(False)
+    product_details.pack(pady=10, padx=10, fill="both", expand=True)
 
 def worker_gui() -> None: 
 
@@ -88,6 +110,7 @@ def worker_gui() -> None:
     control_row = Row(width=width, height=height*6/15, rowName="control", master=root, backgroundcolor="green")
 
     # Wunschliste - Braun
+    global wishlistColumn
     wishlistColumn = Column(width=width/3, height=main_body.height, columnName="wishlist", master=main_body.frameRow, backgroundcolor="brown")
     wishlistColumn.frameColumn.pack(side="left", expand=True, fill="both")
 
