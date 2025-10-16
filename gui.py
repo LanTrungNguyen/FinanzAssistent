@@ -7,9 +7,6 @@ width= root.winfo_screenwidth()
 height= root.winfo_screenheight() 
 
 
-
-
-
 def product_entry_window() -> None: 
     global p_e_w_open
     if p_e_w_open: 
