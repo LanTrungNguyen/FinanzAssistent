@@ -15,6 +15,8 @@ def save_product_entries() -> None:
     }
     
     wishlistColumn.products.append(entry)
+    
+    # weitere Funktion generate_product() aufrufen, die eine Row innerhalb wishlist erzeugt mit den Produkt Informationen
     print(wishlistColumn.products)
      
 
