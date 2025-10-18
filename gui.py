@@ -1,10 +1,26 @@
 import tkinter as tk
+from tkinter import ttk
 from classes import *
 
 root = tk.Tk()
 p_e_w_open = False
 width= root.winfo_screenwidth()               
 height= root.winfo_screenheight() 
+
+def generate_product(entry) -> None: 
+    product = Row(master=wishlistColumn.frameColumn, width=wishlistColumn.width, height=wishlistColumn.height/20, rowName="product" )
+    product.frameRow.pack_propagate(False)
+    product.frameRow.pack()
+
+    separator = ttk.Separator(wishlistColumn.frameColumn, orient="horizontal")
+    separator.pack(fill=tk.X)
+
+    product_name = tk.Label(product.frameRow, text=f"{entry["name"]}")
+    product_quantity = tk.Label(product.frameRow, text=f"{entry["quantity"]}x")
+    product_price = tk.Label(product.frameRow, text=f"{entry["price"]}€")
+    product_name.pack(side="left", padx=(1, 5))
+    product_quantity.pack(side="left", padx=(0, 5))
+    product_price.pack(side="left", padx=(0, 5))
 
 def save_product_entries() -> None: 
     entry = {
@@ -15,8 +31,7 @@ def save_product_entries() -> None:
     }
     
     wishlistColumn.products.append(entry)
-    
-    # weitere Funktion generate_product() aufrufen, die eine Row innerhalb wishlist erzeugt mit den Produkt Informationen
+    generate_product(entry)
     print(wishlistColumn.products)
      
 
@@ -85,7 +100,7 @@ def product_entry_window() -> None:
     price_label.pack_propagate(False)
     price_label.pack(side="left")
 
-    send_bt = tk.Button(product_entry_row.frameRow, text="Send -->", width=23, bd=1, font=("Calibri", 11), command=lambda:[save_product_entries(), on_close()])
+    send_bt = tk.Button(product_entry_row.frameRow, text="Send -->", width=23, bd=1, font=("Calibri", 11), command= lambda:(save_product_entries() or on_close()) if product_entry.get() != "" else print("please enter product"))
     send_bt.pack_propagate(False)
     send_bt.pack(pady=10, padx=9, side="right")
 

@@ -7,6 +7,7 @@ class Row():
         self.rowName = rowName
         self.master = master
         self.backgroundcolor = backgroundcolor
+        self.product = None
 
         self.frameRow = tk.Frame(self.master, width=self.width, height=self.height)
         self.frameRow.configure(background=self.backgroundcolor)
