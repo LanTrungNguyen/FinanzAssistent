@@ -8,6 +8,12 @@ width= root.winfo_screenwidth()
 height= root.winfo_screenheight() 
 
 def generate_product(entry) -> None: 
+    """
+    diese Funktion lässt das eingegebene Produkt in der Spalte wishlist anzeigen; 
+    jedes Produkt bekommt seine eigene Row, die untereinander angezeigt werden;
+
+    --- sollte ich umschreiben, damit das Produkt in den anderen Spalten auch genutzt werden kann ---
+    """
     product = Row(master=wishlistColumn.frameColumn, width=wishlistColumn.width, height=wishlistColumn.height/20, rowName="product" )
     product.frameRow.pack_propagate(False)
     product.frameRow.pack()
@@ -15,6 +21,7 @@ def generate_product(entry) -> None:
     separator = ttk.Separator(wishlistColumn.frameColumn, orient="horizontal")
     separator.pack(fill=tk.X)
 
+    # Produktinformationen innerhalb der Row fürs Produkt
     product_name = tk.Label(product.frameRow, text=f"{entry["name"]}")
     product_quantity = tk.Label(product.frameRow, text=f"{entry["quantity"]}x")
     product_price = tk.Label(product.frameRow, text=f"{entry["price"]}€")
@@ -22,7 +29,13 @@ def generate_product(entry) -> None:
     product_quantity.pack(side="left", padx=(0, 5))
     product_price.pack(side="left", padx=(0, 5))
 
+
 def save_product_entries() -> None: 
+    """
+    wird beim Abschicken des Produkteintrags ausgeführt: 
+        1. speichert die eingegebenen Daten
+        2. lässt das eingegebene Produkt in der Spalte Wishlist anzeigen
+    """
     entry = {
         "name" : product_entry.get(), 
         "quantity" : product_quantity.get(), 
@@ -37,6 +50,10 @@ def save_product_entries() -> None:
 
 
 def product_entry_window() -> None: 
+    """
+    Wenn der + Knopf gedrückt wird öffnet sich ein Fenster, um ein neues
+    Produkt einzutragen 
+    """
     global p_e_w_open
     if p_e_w_open: 
         return 
@@ -54,6 +71,9 @@ def product_entry_window() -> None:
     window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
     def on_close():
+        """
+        schließt das Eingabefenster und sorgt dafür, dass nur 1 Eingabefenster gleichzeitig offen sein kann
+        """
         global p_e_w_open
         p_e_w_open = False
         window.destroy()
@@ -126,7 +146,7 @@ def worker_gui() -> None:
     # Grün
     control_row = Row(width=width, height=height*6/15, rowName="control", master=root, backgroundcolor="green")
 
-    # Wunschliste - Braun
+    # Wunschliste - Braun - linke Spalte
     global wishlistColumn
     wishlistColumn = Column(width=width/3, height=main_body.height, columnName="wishlist", master=main_body.frameRow, backgroundcolor="brown")
     wishlistColumn.frameColumn.pack(side="left", expand=True, fill="both")
@@ -135,11 +155,11 @@ def worker_gui() -> None:
     add_product_bt.pack_propagate(False)
     add_product_bt.pack()
 
-    # Ausstehende Autorisproduct_entry = Row(width=500)ierung - Rot
+    # Ausstehende Autorisproduct_entry = Row(width=500)ierung - Rot - mittlere Spalte
     askingForAuthorization = Column(width=width/3, height=main_body.height, columnName="askingForAuthorization", master=main_body.frameRow, backgroundcolor="red")
     askingForAuthorization.frameColumn.pack(side="left", expand=True, fill="both")
 
-    # Autorisierte Produkte - Lila
+    # Autorisierte Produkte - Lila - rechte Spalte
     authorized = Column(width=width/3, height=main_body.height, columnName="authorized", master=main_body.frameRow, backgroundcolor="purple")
     authorized.frameColumn.pack(side="left", expand=True, fill="both")
     
